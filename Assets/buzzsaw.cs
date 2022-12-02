@@ -13,12 +13,19 @@ public class buzzsaw : MonoBehaviour
     public float rotateSpeed = 5;
     public LineRenderer buzzTrail;
     public float percentTrail = 0.3f;
+    public bool debug = false;
+    public GameObject BehindPointMarker;
+    public GameObject AheadPointMarker;
+    public LineRenderer SegmentDeltaMarker;
+    public LineRenderer PointDeltaMarker;
 
     private int lastPointIndex = 0;
     private float lastDistance;
     private Rigidbody2D rb;
     private float lastTime;
     private float startTime;
+
+   
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +57,7 @@ public class buzzsaw : MonoBehaviour
         }
     }
 
-    public static SegmentIndices getNearestSegmentIndices(Vector3 currPos, Vector3[] points)
+    public SegmentIndices getNearestSegmentIndices(Vector3 currPos, Vector3[] points)
     {
         // find closest two indices to current position
         float leastProjDist = float.PositiveInfinity;
@@ -64,13 +71,23 @@ public class buzzsaw : MonoBehaviour
             var sndPoint = points[sndIdx];
 
             var segmentDelta = sndPoint - fstPoint;
-            var pointDelta = currPos - fstPoint;
+            var firstPointDelta = currPos - fstPoint;
+            var secondPointDelta = currPos - sndPoint;
 
-            var pointProj = Vector3.Project(pointDelta, segmentDelta) + fstPoint;
+            var pointProj = Vector3.Project(firstPointDelta, segmentDelta) + fstPoint;
+
+            float reconstrSegmentMagn = Vector3.Magnitude(firstPointDelta) + Vector3.Magnitude(secondPointDelta);
 
             float candidateLeadProjDist = Vector3.Distance(currPos, pointProj);
-            if (candidateLeadProjDist < leastProjDist)
+            if (candidateLeadProjDist < leastProjDist && Mathf.Approximately(reconstrSegmentMagn, Vector3.Magnitude(segmentDelta)))
             {
+                if (debug)
+                {
+                    SegmentDeltaMarker.gameObject.SetActive(true);
+                    PointDeltaMarker.gameObject.SetActive(true);
+                    SegmentDeltaMarker.SetPositions(new Vector3[] { fstPoint, sndPoint});
+                    PointDeltaMarker.SetPositions(new Vector3[] { fstPoint, currPos});
+                }
                 leastProjDist = candidateLeadProjDist;
                 fstBoundIdx = fstIdx;
                 sndBoundIdx = sndIdx;
@@ -81,7 +98,7 @@ public class buzzsaw : MonoBehaviour
         return new SegmentIndices(fstBoundIdx, sndBoundIdx);
     }
 
-    public static float getPathDistance(Vector3[] points)
+    public float getPathDistance(Vector3[] points)
     {
         float distance = 0;
         for (int fstIdx = 0; fstIdx < points.Length; fstIdx++)
@@ -93,9 +110,17 @@ public class buzzsaw : MonoBehaviour
         return distance;
     }
 
-    public static Vector3[] createEffectivePath(Vector3 startPos, Vector3[] pathPoints)
+    public Vector3[] createEffectivePath(Vector3 startPos, Vector3[] pathPoints)
     {
         var nearestSegIdx = getNearestSegmentIndices(startPos, pathPoints);
+        if (debug)
+        {
+            BehindPointMarker.SetActive(true);
+            AheadPointMarker.SetActive(true);
+            BehindPointMarker.transform.position = pathPoints[nearestSegIdx.fst];
+            AheadPointMarker.transform.position = pathPoints[nearestSegIdx.snd];
+        }
+
         //Debug.Log(string.Format("segment: ({0}, {1})", nearestSegIdx.fst, nearestSegIdx.snd));
         var effectivePath = new Vector3[pathPoints.Length + 1];
         effectivePath[0] = startPos;
@@ -108,7 +133,7 @@ public class buzzsaw : MonoBehaviour
 
     }
 
-    public static List<Vector3> getPathPositionsFraction(Vector3 startPos, float fractionAhead, float fractionBehind, Vector3[] points)
+    public List<Vector3> GetPathFractionPositions(Vector3 startPos, float fractionAhead, float fractionBehind, Vector3[] points)
     {
         float totalDist = getPathDistance(points);
         var effectivePath = createEffectivePath(startPos, points);
@@ -174,7 +199,7 @@ public class buzzsaw : MonoBehaviour
          
     void setBuzzTrail()
     {
-        var trailPositions = getPathPositionsFraction(transform.position, percentTrail, percentTrail, listPoints.ToArray());
+        var trailPositions = GetPathFractionPositions(transform.position, percentTrail, percentTrail, listPoints.ToArray());
         buzzTrail.positionCount = trailPositions.Count;
         buzzTrail.SetPositions(trailPositions.ToArray());
     }

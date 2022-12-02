@@ -51,8 +51,8 @@ public class Player : MonoBehaviour
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
         transform.position = spawnPoint;
 
-        
-        spriteRenderer.color = PlayerColorPicker.Instance.PickColor();
+        color = PlayerColorPicker.Instance.PickColor();
+        spriteRenderer.color = color;
 
 
     }
@@ -271,7 +271,7 @@ public class Player : MonoBehaviour
             }
 
             var positions = actualBouncePositions.ToArray();
-            DrawTempLaser(positions);
+            DrawTempLaser(positions);       
 
             StartCoroutine(TimeoutCooldown());
 
@@ -292,12 +292,14 @@ public class Player : MonoBehaviour
     private void DrawTempLaser(Vector3[] positions) {
         if (positions.Length > 1)
         {
+            Debug.Log("Drew Laser");
             var laserObj = Instantiate(laserPrefab, Vector3.zero, Quaternion.identity);
             var laser = laserObj.GetComponent<laser>();
             laser.SetColor(color);
 
             laser.SetPositions(positions);
             StartCoroutine(TimeoutDestroy(laserObj));
+
         }
     }
 
