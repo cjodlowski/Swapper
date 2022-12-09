@@ -59,6 +59,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        transform.position = SpawnPointManager.Instance.GetSpawnPointByID(playerInput.playerIndex);
+
         gameManager = GameManager.Instance;
         id = gameManager.PlayerJoin(gameObject, color);
         TempInvincibility();

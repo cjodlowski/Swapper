@@ -228,7 +228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6607792742233828999, guid: fb5f588c70d2b449c92694ad6809213a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb5f588c70d2b449c92694ad6809213a, type: 3}
@@ -1025,7 +1025,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1321136862844522918, guid: b885734d036144ac7a4bb15ed958f552, type: 3}
       propertyPath: speed
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1321136862844522918, guid: b885734d036144ac7a4bb15ed958f552, type: 3}
       propertyPath: cooldown
@@ -2033,7 +2033,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5421002610544380547, guid: 32d5a27480e41468c90625c71d7986bd, type: 3}
       propertyPath: m_Name
-      value: colorPicker
+      value: Config
       objectReference: {fileID: 0}
     - target: {fileID: 6091865039105706365, guid: 32d5a27480e41468c90625c71d7986bd, type: 3}
       propertyPath: m_RootOrder
@@ -2041,15 +2041,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6091865039105706365, guid: 32d5a27480e41468c90625c71d7986bd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.3376475
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6091865039105706365, guid: 32d5a27480e41468c90625c71d7986bd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.138653
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6091865039105706365, guid: 32d5a27480e41468c90625c71d7986bd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.43685037
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6091865039105706365, guid: 32d5a27480e41468c90625c71d7986bd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2081,20 +2081,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32d5a27480e41468c90625c71d7986bd, type: 3}
---- !u!1 &7769989568258990144 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5421002610544380547, guid: 32d5a27480e41468c90625c71d7986bd, type: 3}
-  m_PrefabInstance: {fileID: 7769989568258990143}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7769989568258990145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7769989568258990144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0761edb2193b64ae3a407a302cc976c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
