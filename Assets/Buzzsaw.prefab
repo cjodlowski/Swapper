@@ -204,6 +204,7 @@ MonoBehaviour:
   AheadPointMarker: {fileID: 1189101932783026851}
   SegmentDeltaMarker: {fileID: 2140405636756043585}
   PointDeltaMarker: {fileID: 5394594614102557804}
+  trailResolution: 1
 --- !u!50 &1321136862844522919
 Rigidbody2D:
   serializedVersion: 4
@@ -380,10 +381,10 @@ LineRenderer:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 5
-    numCornerVertices: 3
+    numCornerVertices: 5
     numCapVertices: 0
     alignment: 0
-    textureMode: 3
+    textureMode: 1
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 1

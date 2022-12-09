@@ -1097,11 +1097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1321136862844522918, guid: b885734d036144ac7a4bb15ed958f552, type: 3}
       propertyPath: percentTrail
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1321136862844522918, guid: b885734d036144ac7a4bb15ed958f552, type: 3}
-      propertyPath: trailResolution
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1321136862844522918, guid: b885734d036144ac7a4bb15ed958f552, type: 3}
       propertyPath: listPoints.Array.size

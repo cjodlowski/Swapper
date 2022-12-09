@@ -18,20 +18,23 @@ public class buzzsaw : MonoBehaviour
     public GameObject AheadPointMarker;
     public LineRenderer SegmentDeltaMarker;
     public LineRenderer PointDeltaMarker;
+    public int trailResolution;
 
     private int lastPointIndex = 0;
     private float lastDistance;
     private Rigidbody2D rb;
     private float lastTime;
     private float startTime;
+    private float totalDist;
 
-   
 
     // Start is called before the first frame update
     void Start()
     {
         //rb = GetComponent<Rigidbody2D>();
-        transform.position = listPoints[lastPointIndex];
+        transform.position = listPoints[0];
+        lastPointIndex = 0;
+        //totalDist = getPathDistance(points);
         startTime = Time.time;
         //var next_point = (currentPoint + 1) % listPoints.Count;
         //var next_dir = (listPoints[next_point] - listPoints[currentPoint]).normalized;
@@ -57,47 +60,6 @@ public class buzzsaw : MonoBehaviour
         }
     }
 
-    public SegmentIndices getNearestSegmentIndices(Vector3 currPos, Vector3[] points)
-    {
-        // find closest two indices to current position
-        float leastProjDist = float.PositiveInfinity;
-        int fstBoundIdx = 0;
-        int sndBoundIdx = 1;
-
-        for (int fstIdx = 0; fstIdx < points.Length; fstIdx++)
-        {
-            var sndIdx = (fstIdx + 1) % points.Length;
-            var fstPoint = points[fstIdx];
-            var sndPoint = points[sndIdx];
-
-            var segmentDelta = sndPoint - fstPoint;
-            var firstPointDelta = currPos - fstPoint;
-            var secondPointDelta = currPos - sndPoint;
-
-            var pointProj = Vector3.Project(firstPointDelta, segmentDelta) + fstPoint;
-
-            float reconstrSegmentMagn = Vector3.Magnitude(firstPointDelta) + Vector3.Magnitude(secondPointDelta);
-
-            float candidateLeadProjDist = Vector3.Distance(currPos, pointProj);
-            if (candidateLeadProjDist < leastProjDist && Mathf.Approximately(reconstrSegmentMagn, Vector3.Magnitude(segmentDelta)))
-            {
-                if (debug)
-                {
-                    SegmentDeltaMarker.gameObject.SetActive(true);
-                    PointDeltaMarker.gameObject.SetActive(true);
-                    SegmentDeltaMarker.SetPositions(new Vector3[] { fstPoint, sndPoint});
-                    PointDeltaMarker.SetPositions(new Vector3[] { fstPoint, currPos});
-                }
-                leastProjDist = candidateLeadProjDist;
-                fstBoundIdx = fstIdx;
-                sndBoundIdx = sndIdx;
-            }
-
-        }
-
-        return new SegmentIndices(fstBoundIdx, sndBoundIdx);
-    }
-
     public float getPathDistance(Vector3[] points)
     {
         float distance = 0;
@@ -112,7 +74,7 @@ public class buzzsaw : MonoBehaviour
 
     public Vector3[] createEffectivePath(Vector3 startPos, Vector3[] pathPoints)
     {
-        var nearestSegIdx = getNearestSegmentIndices(startPos, pathPoints);
+        var nearestSegIdx = new SegmentIndices(lastPointIndex, (lastPointIndex + 1) % listPoints.Count);
         if (debug)
         {
             BehindPointMarker.SetActive(true);
@@ -122,7 +84,7 @@ public class buzzsaw : MonoBehaviour
         }
 
         //Debug.Log(string.Format("segment: ({0}, {1})", nearestSegIdx.fst, nearestSegIdx.snd));
-        var effectivePath = new Vector3[pathPoints.Length + 1];
+        var effectivePath = new Vector3[pathPoints.Length + 1]; // path starting at the new random point on path going through every current point
         effectivePath[0] = startPos;
         for (int i = 0; i < pathPoints.Length; i++)
         {
@@ -196,10 +158,27 @@ public class buzzsaw : MonoBehaviour
         buzzTrailBehind.AddRange(buzzTrailAhead);
         return buzzTrailBehind;
     }
+
+    List<Vector3> IncreasePathResolution(List<Vector3> path)
+    {
+        var newPath = new List<Vector3>();
+
+        for (int i = 0; i < path.Count - 1; i++)
+        {
+            for (int j = 0; j < trailResolution; j++)
+            {
+                newPath.Add(path[i]);
+                newPath.Add(Vector3.Lerp(path[i], path[i+1], ((float)(j+1))/trailResolution));
+                newPath.Add(path[i+1]);
+            }
+        }
+
+        return newPath;
+    }
          
     void setBuzzTrail()
     {
-        var trailPositions = GetPathFractionPositions(transform.position, percentTrail, percentTrail, listPoints.ToArray());
+        var trailPositions = IncreasePathResolution(GetPathFractionPositions(transform.position, percentTrail, percentTrail, listPoints.ToArray()));
         buzzTrail.positionCount = trailPositions.Count;
         buzzTrail.SetPositions(trailPositions.ToArray());
     }
