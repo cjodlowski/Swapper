@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        enoughActivityTextUI.SetActive(false);
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -44,6 +43,8 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+        enoughActivityTextUI.SetActive(false);
+
     }
 
     private IEnumerator playerJoinSequence(float sec=0.5f)

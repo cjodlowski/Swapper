@@ -390,7 +390,7 @@ public class Player : MonoBehaviour
         if (!dying)
         {
             dying = true;
-            var respawns = gameManager.PlayerKilled(id);
+            var respawns = GameManager.Instance.PlayerKilled(id);
             yield return new WaitForSeconds(0.01f);
             if (!respawns)
             {

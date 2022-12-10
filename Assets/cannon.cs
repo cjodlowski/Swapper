@@ -8,13 +8,14 @@ public class cannon : MonoBehaviour
     public GameObject bulletPrefab;
     public float bulletSpeed;
 
-    public float intervalS = 1;
-    private float timer = 0;
+    private float intervalS = 1;
     private float intervalTime = 1;
 
     // Start is called before the first frame update
     void Start()
     {
+        intervalTime = Time.time + Conductor.Instance.getTimeUntilNextBeat();
+        intervalS = Conductor.Instance.getBeatTimeInterval();
     }
 
     // Update is called once per frame
@@ -22,7 +23,7 @@ public class cannon : MonoBehaviour
     {
         if (Time.time > intervalTime)
         {
-            intervalTime = Time.time + 1;
+            intervalTime = Time.time + intervalS;
             var bulletObj = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
             var rb = bulletObj.GetComponent<Rigidbody2D>();
             var rad = Mathf.Deg2Rad * (-transform.rotation.eulerAngles.z);
