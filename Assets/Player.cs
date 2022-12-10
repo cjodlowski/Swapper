@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     public UIProgress laserCooldownProgress;
     public int aimAssistOneSideAttempts = 5;
     public float aimAssistAngleSpacingDeg = 0.1f;
+    public SpriteRenderer CountDownHalo;
 
 
 
@@ -53,6 +54,7 @@ public class Player : MonoBehaviour
 
         color = PlayerColorPicker.Instance.PickColor();
         spriteRenderer.color = color;
+        CountDownHalo.color = color;
 
 
     }
@@ -162,9 +164,16 @@ public class Player : MonoBehaviour
         return positions;
     }
 
+    public void CountdownHaloEnable(bool enabled)
+    {
+        CountDownHalo.gameObject.SetActive(enabled);
+    }
+
     private void TriggerShoot()
     {
-        if (!coolingDown && !dead)
+        CountdownHaloEnable(true);
+        GameManager.Instance.PlayerAnnounceReadyToPlay(playerInput.playerIndex, this);
+        if (!coolingDown && !dead && !GameManager.Instance.IsCurrentlyDoingCountDown())
         {
             coolingDown = true;
 

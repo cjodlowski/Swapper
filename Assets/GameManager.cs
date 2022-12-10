@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,8 +20,18 @@ public class GameManager : MonoBehaviour
     public float swapWorldPause = 0.1f;
     public float joinWorldPause = 0.5f;
     public float pauseTimescale = 0.3f;
+    public TextMeshProUGUI countDownText;
+    public float countDownIntervalTimeS = 1;
+    public PlayerInputManager playerInputManager;
+
+
+    private bool doingCountDown = false;
 
     private Coroutine enoughActivityCoroutine;
+    private List<bool> playersReadyToPlayMap = new List<bool> { false, false, false, false };
+    private bool gameReady = false;
+
+    private List<Player> players = new List<Player>();
 
     private void Awake()
     {
@@ -34,24 +46,90 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator delayWorldPause(float sec=0.5f)
+    private IEnumerator playerJoinSequence(float sec=0.5f)
     {
+        yield return new WaitUntil(() => !doingCountDown);
+        cameraShake.Shake(joinWorldPause, 0.25f);
         Time.timeScale = pauseTimescale;
         yield return new WaitForSecondsRealtime(sec);
         Time.timeScale = 1;
     }
 
+    public bool IsCurrentlyDoingCountDown() => doingCountDown;
+
+    private bool playersReadyToPlay()
+    {
+        var playerCount = playerInputManager.playerCount;
+        if (playerCount == 0)
+        {
+            return false;
+        }
+        var ready = true;
+        for (int i = 0; i < playerCount; i++)
+        {
+            ready = ready && playersReadyToPlayMap[i];
+        }
+        return ready;
+    }
+
+    public void PlayerAnnounceReadyToPlay(int id, Player player)
+    {
+        Debug.Log("Try to announce ready " + id);
+        if (!playersReadyToPlayMap[id])
+        {
+            player.CountdownHaloEnable(true);
+            players.Add(player);
+            playersReadyToPlayMap[id] = true;
+            return;
+        }
+
+        if (playersReadyToPlay())
+        {
+            gameReady = true;
+            foreach (var eachPlayer in players)
+            {
+                eachPlayer.CountdownHaloEnable(false);
+            }
+        }
+    }
+
 
     private void Start()
     {
-        enoughActivityCoroutine = StartCoroutine(awaitNoActivity(noActivityInterval));
+        enoughActivityCoroutine = StartCoroutine(GameStartSequence());
     }
 
+    private IEnumerator GameStartSequence()
+    {
+        Debug.Log("Starting Count Down Sequence");
+        doingCountDown = true;
+        Time.timeScale = 0;
+
+        Debug.Log("Waiting for players to be ready");
+        countDownText.text = "play";
+
+        yield return new WaitUntil(() => playersReadyToPlay());
+        yield return new WaitUntil(() => gameReady);
+
+        for (int i = 3; i > 0; i--)
+        {
+            countDownText.text = i.ToString();
+            yield return new WaitForSecondsRealtime(countDownIntervalTimeS);
+        }
+        countDownText.text = "";
+        Time.timeScale = 1;
+        doingCountDown = false;
+
+        Debug.Log("Normal Gameplay Commencing");
+        StartCoroutine(awaitNoActivity(noActivityInterval));
+    }
+
+
+    
     // returns own id
     public int PlayerJoin(GameObject playerObject, Color color)
     {
-        StartCoroutine(delayWorldPause(joinWorldPause));
-        cameraShake.Shake(joinWorldPause, 0.25f);
+        StartCoroutine(playerJoinSequence(joinWorldPause));
         var id = stockTextManager.CreateStockText(color);
         playerById.Add(id, playerObject);
         return id;
@@ -80,7 +158,7 @@ public class GameManager : MonoBehaviour
     // return if respawn
     public bool PlayerKilled(int id)
     {
-        StartCoroutine(delayWorldPause(dieWorldPause));
+        StartCoroutine(playerJoinSequence(dieWorldPause));
         cameraShake.Shake(dieWorldPause, 0.25f);
 
         restartAwaitNoActivity();

@@ -71,7 +71,6 @@ public class BigLaserManager : MonoBehaviour
             laserDeployInterval = defaultLaserDeployInterval / 3;
             warningFlashDuration = defaultWarningFlashDuration * 3f / 5f;
             warningFlashInterval = defaultWarningFlashInterval * 3f / 5f;
-            Debug.Log(laserDeployInterval);
             //StartCoroutine(periodicLaserDeploy());
         }
         else

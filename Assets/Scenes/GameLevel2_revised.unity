@@ -130,10 +130,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6607792742001737621, guid: fb5f588c70d2b449c92694ad6809213a, type: 3}
-      propertyPath: m_Name
-      value: StockTextManagerLayout
-      objectReference: {fileID: 0}
     - target: {fileID: 6607792742233828992, guid: fb5f588c70d2b449c92694ad6809213a, type: 3}
       propertyPath: m_Camera
       value: 
@@ -225,10 +221,6 @@ PrefabInstance:
     - target: {fileID: 6607792742233828999, guid: fb5f588c70d2b449c92694ad6809213a, type: 3}
       propertyPath: m_Name
       value: GlobalCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 6607792742233828999, guid: fb5f588c70d2b449c92694ad6809213a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb5f588c70d2b449c92694ad6809213a, type: 3}
@@ -720,6 +712,17 @@ PolygonCollider2D:
       - {x: 0.5, y: -0.5}
       - {x: 0.5, y: -0.44}
       - {x: 0.03, y: 0.5}
+--- !u!114 &725096772 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7370765256251464762, guid: fb5f588c70d2b449c92694ad6809213a, type: 3}
+  m_PrefabInstance: {fileID: 42120525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1090745905
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1303,6 +1306,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6291ad082f3b14391a477f5071cc4759, type: 3}
+--- !u!114 &1896125920 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5366103051288615768, guid: 694838e2c5d8f47b58d6bb501ffc483b, type: 3}
+  m_PrefabInstance: {fileID: 244164209}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1922039434 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6607792741599063162, guid: fb5f588c70d2b449c92694ad6809213a, type: 3}
@@ -1865,6 +1879,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 519420033}
     - target: {fileID: 1267087147974269375, guid: 0679534e3c73c426f81a5e1656fed790, type: 3}
+      propertyPath: countDownText
+      value: 
+      objectReference: {fileID: 725096772}
+    - target: {fileID: 1267087147974269375, guid: 0679534e3c73c426f81a5e1656fed790, type: 3}
       propertyPath: dieWorldPause
       value: 0.2
       objectReference: {fileID: 0}
@@ -1881,9 +1899,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1889447363}
     - target: {fileID: 1267087147974269375, guid: 0679534e3c73c426f81a5e1656fed790, type: 3}
+      propertyPath: playerInputManager
+      value: 
+      objectReference: {fileID: 1896125920}
+    - target: {fileID: 1267087147974269375, guid: 0679534e3c73c426f81a5e1656fed790, type: 3}
       propertyPath: enoughActivityTextUI
       value: 
       objectReference: {fileID: 267568438}
+    - target: {fileID: 1267087147974269375, guid: 0679534e3c73c426f81a5e1656fed790, type: 3}
+      propertyPath: countDownIntervalTimeS
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0679534e3c73c426f81a5e1656fed790, type: 3}
 --- !u!1001 &3002026887965697727
