@@ -75,6 +75,7 @@ public class Player : MonoBehaviour
         rigidbody2D.velocity = move * speed;
     }
 
+    #region MOVE_AIM_CONTROLS
     public void OnMove(InputAction.CallbackContext ctx)
     {
         if (!dead)
@@ -111,6 +112,22 @@ public class Player : MonoBehaviour
         }
 
     }
+    public void OnShoot(InputAction.CallbackContext ctx)
+    {
+        if (!dead)
+        {
+            TriggerShoot();
+        }
+    }
+
+    public void OnMouseShoot(InputAction.CallbackContext ctx)
+    {
+        if (!dead)
+        {
+            TriggerShoot();
+        }
+    }
+    #endregion
 
     IEnumerator TimeoutCooldown()
     {
@@ -172,7 +189,10 @@ public class Player : MonoBehaviour
     private void TriggerShoot()
     {
         CountdownHaloEnable(true);
+
+        //shooting announces ready to play?
         GameManager.Instance.PlayerAnnounceReadyToPlay(playerInput.playerIndex, this);
+
         if (!coolingDown && !dead && !GameManager.Instance.IsCurrentlyDoingCountDown())
         {
             coolingDown = true;
@@ -311,23 +331,6 @@ public class Player : MonoBehaviour
             laser.SetPositions(positions);
             StartCoroutine(TimeoutDestroy(laserObj));
 
-        }
-    }
-
-
-    public void OnShoot(InputAction.CallbackContext ctx)
-    {
-        if (!dead)
-        {
-            TriggerShoot();
-        }
-    }
-
-    public void OnMouseShoot(InputAction.CallbackContext ctx)
-    {
-        if (!dead)
-        {
-            TriggerShoot();
         }
     }
 

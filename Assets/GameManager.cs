@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public GameObject enoughActivityTextUI;
     public CameraShake cameraShake;
     public float dieWorldPause = 0.3f;
-    public float swapWorldPause = 0.1f;
+    public float swapWorldPause = 0.1f; //how long world pauses when players swap
     public float joinWorldPause = 0.5f;
     public float pauseTimescale = 0.3f;
     public TextMeshProUGUI countDownText;
@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     }
 
+    //called when players join the game or respawn
     private IEnumerator playerJoinSequence(float sec=0.5f)
     {
         yield return new WaitUntil(() => !doingCountDown);
@@ -126,7 +127,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    
+    #region PLAYER_METHODS
     // returns own id
     public int PlayerJoin(GameObject playerObject, Color color)
     {
@@ -193,6 +194,7 @@ public class GameManager : MonoBehaviour
         return false;
 
     }
+    #endregion
 
     void restartAwaitNoActivity()
     {
