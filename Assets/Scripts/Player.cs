@@ -190,7 +190,7 @@ public class Player : MonoBehaviour
     {
         CountdownHaloEnable(true);
 
-        //shooting announces ready to play?
+        //shooting announces ready to play
         GameManager.Instance.PlayerAnnounceReadyToPlay(playerInput.playerIndex, this);
 
         if (!coolingDown && !dead && !GameManager.Instance.IsCurrentlyDoingCountDown())

@@ -7,6 +7,9 @@ public class CameraShake : MonoBehaviour
     private Coroutine shake;
     private Vector3 originalPos;
 
+    public float shakeMagnitude = 0.5f;
+    public float shakeDuration = 0.5f;
+
     private void Awake()
     {
         originalPos = transform.position;
@@ -21,6 +24,8 @@ public class CameraShake : MonoBehaviour
         }
         shake = StartCoroutine(ShakeRoutine(shakeDuration, shakeMagnitude));
     }
+
+
 
     private IEnumerator ShakeRoutine(float shakeDuration, float shakeMagnitude)
     {
