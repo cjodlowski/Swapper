@@ -1,7 +1,5 @@
 # Swapper
 
----
-
 ## About
 Gotta Update an About Here :P
 
