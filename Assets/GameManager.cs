@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     public float swapWorldPause = 0.1f; //how long world pauses when players swap
     public float joinWorldPause = 0.5f;
     public float pauseTimescale = 0.3f;
-    public TextMeshProUGUI countDownText;
     public float countDownIntervalTimeS = 1;
     public PlayerInputManager playerInputManager;
 
@@ -32,6 +31,14 @@ public class GameManager : MonoBehaviour
     private bool gameReady = false;
 
     private List<Player> players = new List<Player>();
+
+    [Header("UI and TimeScale")]
+    public static bool paused;
+    
+    public GameObject pauseMenu;
+    public static bool isPaused;
+    public static int pausedPlayerId = -1;
+    public TextMeshProUGUI countDownText;
 
     private void Awake()
     {
@@ -194,6 +201,16 @@ public class GameManager : MonoBehaviour
         return false;
 
     }
+    #endregion
+
+    #region UI_METHODS
+
+    public void Pause()
+    {
+        pauseMenu.SetActive(isPaused);
+
+    }
+
     #endregion
 
     void restartAwaitNoActivity()

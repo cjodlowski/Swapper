@@ -71,6 +71,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""82a92458-59cb-4e29-a212-423ef0f7bcc4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -249,6 +258,67 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""MouseShoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2f203b6c-084d-4009-b6af-1812b96caecc"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""keyboard controls"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c77dc99b-0698-4d70-b84d-0ca2ed241393"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""gamepad controls"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Menuplay"",
+            ""id"": ""06764323-b88d-4264-899f-1e106adbbb8c"",
+            ""actions"": [
+                {
+                    ""name"": ""UnPause"",
+                    ""type"": ""Button"",
+                    ""id"": ""b154f7f1-c365-4735-ad9c-390aeeffe96b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""946ef35a-7afe-4f74-b62a-fed92e413833"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""keyboard controls"",
+                    ""action"": ""UnPause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""af399853-c578-4bf7-a517-275bd874393a"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""gamepad controls"",
+                    ""action"": ""UnPause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -290,6 +360,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Gameplay_MouseAim = m_Gameplay.FindAction("MouseAim", throwIfNotFound: true);
         m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
         m_Gameplay_MouseShoot = m_Gameplay.FindAction("MouseShoot", throwIfNotFound: true);
+        m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+        // Menuplay
+        m_Menuplay = asset.FindActionMap("Menuplay", throwIfNotFound: true);
+        m_Menuplay_UnPause = m_Menuplay.FindAction("UnPause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -354,6 +428,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_MouseAim;
     private readonly InputAction m_Gameplay_Shoot;
     private readonly InputAction m_Gameplay_MouseShoot;
+    private readonly InputAction m_Gameplay_Pause;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -363,6 +438,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @MouseAim => m_Wrapper.m_Gameplay_MouseAim;
         public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
         public InputAction @MouseShoot => m_Wrapper.m_Gameplay_MouseShoot;
+        public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -387,6 +463,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @MouseShoot.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseShoot;
                 @MouseShoot.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseShoot;
                 @MouseShoot.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseShoot;
+                @Pause.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -406,10 +485,46 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @MouseShoot.started += instance.OnMouseShoot;
                 @MouseShoot.performed += instance.OnMouseShoot;
                 @MouseShoot.canceled += instance.OnMouseShoot;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
+
+    // Menuplay
+    private readonly InputActionMap m_Menuplay;
+    private IMenuplayActions m_MenuplayActionsCallbackInterface;
+    private readonly InputAction m_Menuplay_UnPause;
+    public struct MenuplayActions
+    {
+        private @Controls m_Wrapper;
+        public MenuplayActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @UnPause => m_Wrapper.m_Menuplay_UnPause;
+        public InputActionMap Get() { return m_Wrapper.m_Menuplay; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MenuplayActions set) { return set.Get(); }
+        public void SetCallbacks(IMenuplayActions instance)
+        {
+            if (m_Wrapper.m_MenuplayActionsCallbackInterface != null)
+            {
+                @UnPause.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnUnPause;
+                @UnPause.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnUnPause;
+                @UnPause.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnUnPause;
+            }
+            m_Wrapper.m_MenuplayActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @UnPause.started += instance.OnUnPause;
+                @UnPause.performed += instance.OnUnPause;
+                @UnPause.canceled += instance.OnUnPause;
+            }
+        }
+    }
+    public MenuplayActions @Menuplay => new MenuplayActions(this);
     private int m_keyboardcontrolsSchemeIndex = -1;
     public InputControlScheme keyboardcontrolsScheme
     {
@@ -435,5 +550,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnMouseAim(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnMouseShoot(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+    }
+    public interface IMenuplayActions
+    {
+        void OnUnPause(InputAction.CallbackContext context);
     }
 }

@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
 {
     PlayerInput playerInput;
     SpriteRenderer spriteRenderer;
-    Controls controls;
     Vector2 move = Vector2.zero;
     Vector2 aimDir = Vector2.zero;
     Rigidbody2D rigidbody2D;
@@ -46,11 +45,9 @@ public class Player : MonoBehaviour
 
 
     void Awake() {
-        controls = new Controls();
         playerInput = gameObject.GetComponent<PlayerInput>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
-        transform.position = spawnPoint;
 
         color = PlayerColorPicker.Instance.PickColor();
         spriteRenderer.color = color;
@@ -62,6 +59,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         transform.position = SpawnPointManager.Instance.GetSpawnPointByID(playerInput.playerIndex);
+        spawnPoint = SpawnPointManager.Instance.GetSpawnPointByID(playerInput.playerIndex);
 
         gameManager = GameManager.Instance;
         id = gameManager.PlayerJoin(gameObject, color);
@@ -75,7 +73,7 @@ public class Player : MonoBehaviour
         rigidbody2D.velocity = move * speed;
     }
 
-    #region MOVE_AIM_CONTROLS
+    #region CONTROLS
     public void OnMove(InputAction.CallbackContext ctx)
     {
         if (!dead)
@@ -126,6 +124,37 @@ public class Player : MonoBehaviour
         {
             TriggerShoot();
         }
+    }
+
+    public void OnPause(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            if (GameManager.pausedPlayerId == -1) //should be -1 if not paused
+            {
+                GameManager.isPaused = true;
+                GameManager.pausedPlayerId = this.id;
+                Time.timeScale = 0;
+                gameManager.Pause();
+
+                Debug.Log("Player " + id + " Paused");
+
+                playerInput.SwitchCurrentActionMap("Menuplay");
+            }
+            else if (GameManager.pausedPlayerId == this.id)
+            {
+                GameManager.isPaused = false;
+                GameManager.pausedPlayerId = -1;
+                Time.timeScale = 1;
+
+                Debug.Log("Player " + id + " UnPaused");
+
+                playerInput.SwitchCurrentActionMap("Gameplay");
+                gameManager.Pause();
+            }
+
+        }
+
     }
     #endregion
 
@@ -412,16 +441,6 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(delayDie());
         }
-    }
-
-    void OnEnable()
-    {
-        controls.Gameplay.Enable();
-    }
-
-    void OnDisable()
-    {
-        controls.Gameplay.Disable();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

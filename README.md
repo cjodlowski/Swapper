@@ -7,6 +7,12 @@ Gotta Update an About Here :P
 
 ## Update Log
 
+### 05/08/23
+ - Fixed Players Respawning in the wrong area
+ - Implemented some pause menu functionality
+ - added paused gamestate to GameManager
+ - added actions to inputactions
+ - deleted controls file b/c i didnt see it getting used
 
 ### 05/03/23
 
