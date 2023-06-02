@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+
+using UnityEngine.InputSystem.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -39,6 +42,8 @@ public class GameManager : MonoBehaviour
     public static bool isPaused;
     public static int pausedPlayerId = -1;
     public TextMeshProUGUI countDownText;
+
+    InputSystemUIInputModule inputSystemUIInputModule;
 
     private void Awake()
     {
@@ -105,6 +110,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        InputSystem.settings.SetInternalFeatureFlag("DISABLE_SHORTCUT_SUPPORT", true); //hopefully a fix for movement issues
+        inputSystemUIInputModule = GameObject.FindGameObjectWithTag("EventSystem").GetComponent<InputSystemUIInputModule>();
         enoughActivityCoroutine = StartCoroutine(GameStartSequence());
     }
 
@@ -205,10 +212,77 @@ public class GameManager : MonoBehaviour
 
     #region UI_METHODS
 
-    public void Pause()
+    public void Pause(int playerID, bool isPausing)
     {
-        pauseMenu.SetActive(isPaused);
+        
+        
+        if(isPausing)
+        {
+            isPaused = true;
+            pausedPlayerId = playerID;
+            Time.timeScale = 0;
 
+            Debug.Log(" ^^ Player " + playerID + " Paused");
+
+            foreach(Player p in players)
+            {
+                if(p.id != playerID)
+                {
+                    //p.playerInput.DeactivateInput();
+                    Debug.Log(" ^^ Player " + p.id + " Deactivated");
+                } else
+                {
+                    p.playerInput.SwitchCurrentActionMap("Menuplay");
+                       Debug.Log(" ^^ Player " + p.id + " Controlling Input");
+
+                    Debug.Log("Player is using " + p.playerInput.currentControlScheme);
+                    inputSystemUIInputModule.actionsAsset = p.playerInput.actions;
+
+
+                }
+            }
+        } else
+        {
+            isPaused = false;
+            pausedPlayerId = -1;
+            Time.timeScale = 1;
+
+            foreach (Player p in players)
+            {
+                if (p.id != playerID)
+                {
+                    //p.playerInput.ActivateInput();
+                    Debug.Log(" ^^ Player " + p.id + " Reactivated");
+                }
+                else
+                {
+                    p.playerInput.SwitchCurrentActionMap("Gameplay");
+                    Debug.Log(" ^^ Player " + p.id + " Switched back to Gameplay");
+                }
+            }
+        }
+        pauseMenu.SetActive(isPaused);
+    }
+
+    //Used for menu
+    public void Resume()
+    {
+        isPaused = false;
+        pausedPlayerId = -1;
+        Time.timeScale = 1;
+
+        foreach (Player p in players)
+        {
+            p.playerInput.ActivateInput();
+            p.playerInput.SwitchCurrentActionMap("Gameplay");
+        }
+
+        pauseMenu.SetActive(isPaused);
+    }
+
+    public void BacktoMainMenu()
+    {
+        SceneManager.LoadScene("SelectGame");
     }
 
     #endregion

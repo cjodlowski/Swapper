@@ -6,13 +6,13 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput), typeof(SpriteRenderer), typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    PlayerInput playerInput;
+    public PlayerInput playerInput;
     SpriteRenderer spriteRenderer;
     Vector2 move = Vector2.zero;
     Vector2 aimDir = Vector2.zero;
     Rigidbody2D rigidbody2D;
     GameManager gameManager;
-    int id;
+    public int id;
     bool dead = false;
     bool invince = false;
     bool dying = false;
@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
 
     void Awake() {
         playerInput = gameObject.GetComponent<PlayerInput>();
+        //playerInput.uiInputModule = GameObject.FindGameObjectWithTag("EventSystem").GetComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
 
@@ -64,6 +65,9 @@ public class Player : MonoBehaviour
         gameManager = GameManager.Instance;
         id = gameManager.PlayerJoin(gameObject, color);
         TempInvincibility();
+
+       
+
     }
 
     private void Update()
@@ -71,11 +75,13 @@ public class Player : MonoBehaviour
         //Vector2 scaled_move = new Vector2(move.x, move.y) * Time.deltaTime * speed;
         //transform.Translate(scaled_move, Space.World);
         rigidbody2D.velocity = move * speed;
+        Debug.Log("Current Action Map for Player " + id + " " + playerInput.currentActionMap);
     }
 
     #region CONTROLS
     public void OnMove(InputAction.CallbackContext ctx)
     {
+        Debug.Log("moving " + playerInput.currentActionMap);
         if (!dead)
         {
             move = ctx.ReadValue<Vector2>();
@@ -132,29 +138,19 @@ public class Player : MonoBehaviour
         {
             if (GameManager.pausedPlayerId == -1) //should be -1 if not paused
             {
-                GameManager.isPaused = true;
-                GameManager.pausedPlayerId = this.id;
-                Time.timeScale = 0;
-                gameManager.Pause();
-
-                Debug.Log("Player " + id + " Paused");
-
-                playerInput.SwitchCurrentActionMap("Menuplay");
+                gameManager.Pause(id, true);
             }
             else if (GameManager.pausedPlayerId == this.id)
             {
-                GameManager.isPaused = false;
-                GameManager.pausedPlayerId = -1;
-                Time.timeScale = 1;
-
-                Debug.Log("Player " + id + " UnPaused");
-
-                playerInput.SwitchCurrentActionMap("Gameplay");
-                gameManager.Pause();
+                gameManager.Pause(id, false);
             }
 
         }
 
+    }
+
+    public void OnNavigate(InputAction.CallbackContext ctx)
+    {
     }
     #endregion
 

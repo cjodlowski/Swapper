@@ -723,6 +723,58 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: b154f7f1-c365-4735-ad9c-390aeeffe96b
     m_ActionName: Menuing/UnPause[/Keyboard/escape,/DualShock4GamepadHID/start]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8726532438429195044}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: OnNavigate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 07345977-6e88-4d1f-ae8a-59bb60fc2c4b
+    m_ActionName: Menuplay/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b3ad4cc1-4a1b-41b4-89d5-887511b9be1b
+    m_ActionName: Menuplay/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c9c0ff71-80c6-415d-90af-2467b346bb96
+    m_ActionName: Menuplay/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ab603cfc-87ac-4fe3-ac3c-c38f76f782c1
+    m_ActionName: Menuplay/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7c04d0d0-e42e-4451-82bd-7b23e5cb8ed5
+    m_ActionName: Menuplay/Click[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 86587c26-00de-4814-91b6-22df38410a70
+    m_ActionName: Menuplay/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3e3d1b62-c1d6-4d93-9518-07fde5578743
+    m_ActionName: Menuplay/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 54f4b926-0c38-4b32-96c0-7dd927629c62
+    m_ActionName: Menuplay/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 87ece5a7-8664-4dd0-90b2-9dc6640015a8
+    m_ActionName: Menuplay/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 82d69086-7305-42ea-9409-85bdd961ba31
+    m_ActionName: Menuplay/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -740,6 +792,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054ff8d2d53f940e3b39e2ecb2d850c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInput: {fileID: 0}
+  id: 0
   laserPrefab: {fileID: 8370572831318403623, guid: 11d328c6c8e00415d9d3fdf58e98f2fc, type: 3}
   laserDebugPrefab: {fileID: 8370572831318403623, guid: ddb06a7ed5321468bb420b1ed93ef802, type: 3}
   laserFlagPrefab: {fileID: 8370572831318403623, guid: 3c78f58b6a6064e4fbae34e2b71f793c, type: 3}
