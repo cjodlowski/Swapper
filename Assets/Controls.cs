@@ -284,7 +284,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Menuplay"",
+            ""name"": ""UI"",
             ""id"": ""06764323-b88d-4264-899f-1e106adbbb8c"",
             ""actions"": [
                 {
@@ -677,10 +677,21 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""fb56c6e0-a642-4763-9b1b-80762ef04d6e"",
-                    ""path"": ""*/{Submit}"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""keyboard controls"",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d75e21c-ba21-4637-ac02-7f0867a65953"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""gamepad controls"",
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -769,6 +780,28 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""51e0ce62-4d38-42c2-8068-f852aea1ea1d"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""keyboard controls"",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d45ff24-b6d3-47df-8658-a3dd3ef219e6"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""gamepad controls"",
                     ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -869,19 +902,19 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
         m_Gameplay_MouseShoot = m_Gameplay.FindAction("MouseShoot", throwIfNotFound: true);
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
-        // Menuplay
-        m_Menuplay = asset.FindActionMap("Menuplay", throwIfNotFound: true);
-        m_Menuplay_UnPause = m_Menuplay.FindAction("UnPause", throwIfNotFound: true);
-        m_Menuplay_Navigate = m_Menuplay.FindAction("Navigate", throwIfNotFound: true);
-        m_Menuplay_Submit = m_Menuplay.FindAction("Submit", throwIfNotFound: true);
-        m_Menuplay_Cancel = m_Menuplay.FindAction("Cancel", throwIfNotFound: true);
-        m_Menuplay_Point = m_Menuplay.FindAction("Point", throwIfNotFound: true);
-        m_Menuplay_Click = m_Menuplay.FindAction("Click", throwIfNotFound: true);
-        m_Menuplay_ScrollWheel = m_Menuplay.FindAction("ScrollWheel", throwIfNotFound: true);
-        m_Menuplay_MiddleClick = m_Menuplay.FindAction("MiddleClick", throwIfNotFound: true);
-        m_Menuplay_RightClick = m_Menuplay.FindAction("RightClick", throwIfNotFound: true);
-        m_Menuplay_TrackedDevicePosition = m_Menuplay.FindAction("TrackedDevicePosition", throwIfNotFound: true);
-        m_Menuplay_TrackedDeviceOrientation = m_Menuplay.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_UnPause = m_UI.FindAction("UnPause", throwIfNotFound: true);
+        m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
+        m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
+        m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
+        m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
+        m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
+        m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
+        m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
+        m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
+        m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
+        m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1011,79 +1044,79 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
 
-    // Menuplay
-    private readonly InputActionMap m_Menuplay;
-    private IMenuplayActions m_MenuplayActionsCallbackInterface;
-    private readonly InputAction m_Menuplay_UnPause;
-    private readonly InputAction m_Menuplay_Navigate;
-    private readonly InputAction m_Menuplay_Submit;
-    private readonly InputAction m_Menuplay_Cancel;
-    private readonly InputAction m_Menuplay_Point;
-    private readonly InputAction m_Menuplay_Click;
-    private readonly InputAction m_Menuplay_ScrollWheel;
-    private readonly InputAction m_Menuplay_MiddleClick;
-    private readonly InputAction m_Menuplay_RightClick;
-    private readonly InputAction m_Menuplay_TrackedDevicePosition;
-    private readonly InputAction m_Menuplay_TrackedDeviceOrientation;
-    public struct MenuplayActions
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_UnPause;
+    private readonly InputAction m_UI_Navigate;
+    private readonly InputAction m_UI_Submit;
+    private readonly InputAction m_UI_Cancel;
+    private readonly InputAction m_UI_Point;
+    private readonly InputAction m_UI_Click;
+    private readonly InputAction m_UI_ScrollWheel;
+    private readonly InputAction m_UI_MiddleClick;
+    private readonly InputAction m_UI_RightClick;
+    private readonly InputAction m_UI_TrackedDevicePosition;
+    private readonly InputAction m_UI_TrackedDeviceOrientation;
+    public struct UIActions
     {
         private @Controls m_Wrapper;
-        public MenuplayActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @UnPause => m_Wrapper.m_Menuplay_UnPause;
-        public InputAction @Navigate => m_Wrapper.m_Menuplay_Navigate;
-        public InputAction @Submit => m_Wrapper.m_Menuplay_Submit;
-        public InputAction @Cancel => m_Wrapper.m_Menuplay_Cancel;
-        public InputAction @Point => m_Wrapper.m_Menuplay_Point;
-        public InputAction @Click => m_Wrapper.m_Menuplay_Click;
-        public InputAction @ScrollWheel => m_Wrapper.m_Menuplay_ScrollWheel;
-        public InputAction @MiddleClick => m_Wrapper.m_Menuplay_MiddleClick;
-        public InputAction @RightClick => m_Wrapper.m_Menuplay_RightClick;
-        public InputAction @TrackedDevicePosition => m_Wrapper.m_Menuplay_TrackedDevicePosition;
-        public InputAction @TrackedDeviceOrientation => m_Wrapper.m_Menuplay_TrackedDeviceOrientation;
-        public InputActionMap Get() { return m_Wrapper.m_Menuplay; }
+        public UIActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @UnPause => m_Wrapper.m_UI_UnPause;
+        public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
+        public InputAction @Submit => m_Wrapper.m_UI_Submit;
+        public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
+        public InputAction @Point => m_Wrapper.m_UI_Point;
+        public InputAction @Click => m_Wrapper.m_UI_Click;
+        public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
+        public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
+        public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
+        public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
+        public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MenuplayActions set) { return set.Get(); }
-        public void SetCallbacks(IMenuplayActions instance)
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
         {
-            if (m_Wrapper.m_MenuplayActionsCallbackInterface != null)
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
             {
-                @UnPause.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnUnPause;
-                @UnPause.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnUnPause;
-                @UnPause.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnUnPause;
-                @Navigate.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnNavigate;
-                @Navigate.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnNavigate;
-                @Navigate.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnNavigate;
-                @Submit.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnSubmit;
-                @Submit.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnSubmit;
-                @Submit.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnSubmit;
-                @Cancel.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnCancel;
-                @Cancel.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnCancel;
-                @Cancel.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnCancel;
-                @Point.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnPoint;
-                @Point.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnPoint;
-                @Point.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnPoint;
-                @Click.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnClick;
-                @Click.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnClick;
-                @Click.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnClick;
-                @ScrollWheel.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnScrollWheel;
-                @ScrollWheel.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnScrollWheel;
-                @ScrollWheel.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnScrollWheel;
-                @MiddleClick.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnMiddleClick;
-                @MiddleClick.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnMiddleClick;
-                @MiddleClick.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnMiddleClick;
-                @RightClick.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnRightClick;
-                @RightClick.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnRightClick;
-                @RightClick.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnRightClick;
-                @TrackedDevicePosition.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnTrackedDevicePosition;
-                @TrackedDevicePosition.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnTrackedDevicePosition;
-                @TrackedDevicePosition.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnTrackedDevicePosition;
-                @TrackedDeviceOrientation.started -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnTrackedDeviceOrientation;
-                @TrackedDeviceOrientation.performed -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnTrackedDeviceOrientation;
-                @TrackedDeviceOrientation.canceled -= m_Wrapper.m_MenuplayActionsCallbackInterface.OnTrackedDeviceOrientation;
+                @UnPause.started -= m_Wrapper.m_UIActionsCallbackInterface.OnUnPause;
+                @UnPause.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnUnPause;
+                @UnPause.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnUnPause;
+                @Navigate.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
+                @Navigate.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
+                @Navigate.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
+                @Submit.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSubmit;
+                @Submit.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSubmit;
+                @Submit.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSubmit;
+                @Cancel.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCancel;
+                @Cancel.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCancel;
+                @Cancel.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCancel;
+                @Point.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
+                @Point.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
+                @Point.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
+                @Click.started -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                @ScrollWheel.started -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
+                @ScrollWheel.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
+                @ScrollWheel.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
+                @MiddleClick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMiddleClick;
+                @MiddleClick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMiddleClick;
+                @MiddleClick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMiddleClick;
+                @RightClick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnRightClick;
+                @RightClick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnRightClick;
+                @RightClick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnRightClick;
+                @TrackedDevicePosition.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDevicePosition;
+                @TrackedDevicePosition.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDevicePosition;
+                @TrackedDevicePosition.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDevicePosition;
+                @TrackedDeviceOrientation.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
+                @TrackedDeviceOrientation.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
+                @TrackedDeviceOrientation.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
             }
-            m_Wrapper.m_MenuplayActionsCallbackInterface = instance;
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @UnPause.started += instance.OnUnPause;
@@ -1122,7 +1155,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
             }
         }
     }
-    public MenuplayActions @Menuplay => new MenuplayActions(this);
+    public UIActions @UI => new UIActions(this);
     private int m_keyboardcontrolsSchemeIndex = -1;
     public InputControlScheme keyboardcontrolsScheme
     {
@@ -1150,7 +1183,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnMouseShoot(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
     }
-    public interface IMenuplayActions
+    public interface IUIActions
     {
         void OnUnPause(InputAction.CallbackContext context);
         void OnNavigate(InputAction.CallbackContext context);

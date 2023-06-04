@@ -262,7 +262,7 @@
             ]
         },
         {
-            "name": "Menuplay",
+            "name": "UI",
             "id": "06764323-b88d-4264-899f-1e106adbbb8c",
             "actions": [
                 {
@@ -655,10 +655,21 @@
                 {
                     "name": "",
                     "id": "fb56c6e0-a642-4763-9b1b-80762ef04d6e",
-                    "path": "*/{Submit}",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "keyboard controls",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9d75e21c-ba21-4637-ac02-7f0867a65953",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "gamepad controls",
                     "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -747,6 +758,28 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "51e0ce62-4d38-42c2-8068-f852aea1ea1d",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "keyboard controls",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0d45ff24-b6d3-47df-8658-a3dd3ef219e6",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "gamepad controls",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false

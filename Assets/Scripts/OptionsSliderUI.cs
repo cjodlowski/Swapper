@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
-public class OptionsSliderUI : MonoBehaviour
+public class OptionsSliderUI : MonoBehaviour, ISubmitHandler, ICancelHandler
 {
 
     public Slider slider;
@@ -16,8 +18,33 @@ public class OptionsSliderUI : MonoBehaviour
     public Sprite notMuted;
 
     public OptionType prefsKey;
+
+    private Navigation originalNav;
+    private Navigation noneNav;
+
+    public void OnCancel(BaseEventData eventData)
+    {
+        slider.navigation = originalNav;
+    }
+
+    public void OnSubmit(BaseEventData eventData)
+    {
+        if(slider.navigation.mode == Navigation.Mode.None)
+        {
+            slider.navigation = originalNav;
+        } else
+        {
+            slider.navigation = noneNav;
+        }
+    }
+
     private void Start()
     {
+        originalNav = slider.navigation;
+
+        noneNav = new Navigation();
+        noneNav.mode = Navigation.Mode.None;
+
         switch(prefsKey)
         {
             case OptionType.MASTERVOLUME:

@@ -232,7 +232,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log(" ^^ Player " + p.id + " Deactivated");
                 } else
                 {
-                    p.playerInput.SwitchCurrentActionMap("Menuplay");
+                    p.playerInput.SwitchCurrentActionMap("UI");
                        Debug.Log(" ^^ Player " + p.id + " Controlling Input");
 
                     Debug.Log("Player is using " + p.playerInput.currentControlScheme);
