@@ -35,7 +35,8 @@ public class buzzsaw : MonoBehaviour
         transform.position = listPoints[0];
         lastPointIndex = 0;
         elapsedTime = 0;
-        GetComponent<Rigidbody2D>().angularVelocity = rotateSpeed;
+        rb = GetComponent<Rigidbody2D>();
+        rb.angularVelocity = rotateSpeed * Time.timeScale;
         setBuzzTrail();
     }
 
@@ -194,6 +195,14 @@ public class buzzsaw : MonoBehaviour
             }
 
             elapsedTime += Time.deltaTime;
+
+            rb.angularVelocity = rotateSpeed * Time.timeScale;
+
+            
+        } else
+        {
+            rb.angularVelocity = 0;
         }
+        Debug.Log("Rotational velocity " + rb.angularVelocity);
     }
 }

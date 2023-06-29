@@ -49,15 +49,15 @@ public class BigLaserManager : MonoBehaviour
     {
         while (true)
         {
-            
+
             while (deploying)
             {
-                yield return new WaitForSeconds(1);
+                yield return null;
             }
-            yield return new WaitForSeconds(laserDeployInterval);
-            laserDeploy();
-        }
+            yield return StartCoroutine(CoroutineUtils.WaitForSecondsExcludePause(laserDeployInterval));
+            StartCoroutine(laserSequence());
 
+        }
     }
 
     public void toggleLaserSpeedup(bool speedup)
@@ -167,10 +167,10 @@ public class BigLaserManager : MonoBehaviour
         {
             lineRend.startColor = warningColor;
             lineRend.endColor = warningColor;
-            yield return new WaitForSeconds(warningFlashInterval);
+            yield return StartCoroutine(CoroutineUtils.WaitForSecondsExcludePause(warningFlashInterval));
             lineRend.startColor = Color.clear;
             lineRend.endColor = Color.clear;
-            yield return new WaitForSeconds(warningFlashInterval);
+            yield return StartCoroutine(CoroutineUtils.WaitForSecondsExcludePause(warningFlashInterval));
         }
 
     }
@@ -201,20 +201,15 @@ public class BigLaserManager : MonoBehaviour
     private IEnumerator TempLaser()
     {
         toggleLaser(true);
-        yield return new WaitForSeconds(laserFlashDuration);
+        yield return StartCoroutine(CoroutineUtils.WaitForSecondsExcludePause(laserFlashDuration));
         toggleLaser(false);
-    }
-
-    public void laserDeploy()
-    {
-        StartCoroutine(laserSequence());
     }
     public IEnumerator laserSequence()
     {
         deploying = true;
         SetRandomLaserPosition();
         toggleWarning(true);
-        yield return new WaitForSeconds(warningFlashDuration);
+        yield return StartCoroutine(CoroutineUtils.WaitForSecondsExcludePause(warningFlashDuration));
         toggleWarning(false);
         laserFlash();
         deploying = false;

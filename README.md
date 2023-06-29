@@ -6,7 +6,10 @@ Gotta Update an About Here :P
 ---
 
 ## Update Log
-
+### 06/29/23
+ - Buzzsaw now rotates with slowed timescale 
+ - Laser is now reworked to work with pause menu
+ - UIProgress pauses when the games pause
 ### 06/28/23
  - Reworked some issue with Pausing before the round starts
  - Trying to make sure all coroutines are not running while the pause menu or game over sequence is occuring

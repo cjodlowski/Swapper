@@ -31,15 +31,15 @@ public class UIProgress : MonoBehaviour
             img.fillAmount = 1 - elapsed / duration;
             elapsed += 0.125f;
             //stopWatch.Start();
-            yield return new WaitForSeconds(0.125f);
+            yield return StartCoroutine(CoroutineUtils.WaitForSecondsExcludePause(0.125f));
             
         }
         img.fillAmount = 1;
-        yield return new WaitForSeconds(0.1f);
+        yield return StartCoroutine(CoroutineUtils.WaitForSecondsExcludePause(0.1f));
         img.fillAmount = 0;
-        yield return new WaitForSeconds(0.1f);
+        yield return StartCoroutine(CoroutineUtils.WaitForSecondsExcludePause(0.1f));
         img.fillAmount = 1;
-        yield return new WaitForSeconds(0.1f);
+        yield return StartCoroutine(CoroutineUtils.WaitForSecondsExcludePause(0.1f));
         img.fillAmount = 0;
         routine = null;
     }
