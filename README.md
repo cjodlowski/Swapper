@@ -7,6 +7,13 @@ Gotta Update an About Here :P
 
 ## Update Log
 
+### 06/28/23
+ - Reworked some issue with Pausing before the round starts
+ - Trying to make sure all coroutines are not running while the pause menu or game over sequence is occuring
+ - Attempting to avoid timeScale but might still need to rework some things
+ - Hopefully without breaking everything in the process
+ - Updated the HandleEnd() method to pause and slow down time on the final blow
+
 ### 06/02/23
  - Workaround for InputSystem bug where WASD could not be used for UI and Player Movement at the same time
  - Created and hooked up PauseMenu Options and buttons
