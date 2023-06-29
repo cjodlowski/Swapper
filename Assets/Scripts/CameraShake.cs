@@ -33,13 +33,21 @@ public class CameraShake : MonoBehaviour
 
         while (elapsed < shakeDuration)
         {
-            float x = Random.Range(-1f, 1f) * shakeMagnitude;
-            float y = Random.Range(-1f, 1f) * shakeMagnitude;
+            if (!GameManager.isPaused)
+            {
+                float x = Random.Range(-1f, 1f) * shakeMagnitude;
+                float y = Random.Range(-1f, 1f) * shakeMagnitude;
 
-            transform.localPosition = new Vector3(x, y, originalPos.z);
+                transform.localPosition = new Vector3(x, y, originalPos.z);
 
-            elapsed += Time.deltaTime;
-            yield return new WaitForSecondsRealtime(0.01f);
+                elapsed += Time.deltaTime;
+                yield return new WaitForSecondsRealtime(0.01f);
+            }
+            else
+            {
+                yield return null;
+            }
+            
         }
 
         transform.position = originalPos;

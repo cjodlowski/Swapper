@@ -30,13 +30,14 @@ public class GameManager : MonoBehaviour
     private bool doingCountDown = false;
 
     private Coroutine enoughActivityCoroutine;
+    private float elapsedNoActivityTime;
     private List<bool> playersReadyToPlayMap = new List<bool> { false, false, false, false };
     private bool gameReady = false;
 
     private List<Player> players = new List<Player>();
 
     [Header("UI and TimeScale")]
-    public static bool paused;
+    public static bool isRoundStarted;
     
     public GameObject pauseMenu;
     public static bool isPaused;
@@ -47,6 +48,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1;
+
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -57,6 +60,8 @@ public class GameManager : MonoBehaviour
         }
         enoughActivityTextUI.SetActive(false);
 
+        elapsedNoActivityTime = 0f;
+
     }
 
     //called when players join the game or respawn
@@ -64,9 +69,9 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitUntil(() => !doingCountDown);
         cameraShake.Shake(joinWorldPause, 0.25f);
-        Time.timeScale = pauseTimescale;
+        GameManager.isPaused = true;
         yield return new WaitForSecondsRealtime(sec);
-        Time.timeScale = 1;
+        GameManager.isPaused = false;
     }
 
     public bool IsCurrentlyDoingCountDown() => doingCountDown;
@@ -110,6 +115,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        isPaused = false;
+        isRoundStarted = false;
+
         InputSystem.settings.SetInternalFeatureFlag("DISABLE_SHORTCUT_SUPPORT", true); //hopefully a fix for movement issues
         inputSystemUIInputModule = GameObject.FindGameObjectWithTag("EventSystem").GetComponent<InputSystemUIInputModule>();
         enoughActivityCoroutine = StartCoroutine(GameStartSequence());
@@ -119,7 +127,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Starting Count Down Sequence");
         doingCountDown = true;
-        Time.timeScale = 0;
 
         Debug.Log("Waiting for players to be ready");
         countDownText.text = "play";
@@ -133,10 +140,10 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(countDownIntervalTimeS);
         }
         countDownText.text = "";
-        Time.timeScale = 1;
         doingCountDown = false;
 
         Debug.Log("Normal Gameplay Commencing");
+        isRoundStarted = true;
         StartCoroutine(awaitNoActivity(noActivityInterval));
     }
 
@@ -174,18 +181,20 @@ public class GameManager : MonoBehaviour
     // return if respawn
     public bool PlayerKilled(int id)
     {
-        StartCoroutine(playerJoinSequence(dieWorldPause));
-        cameraShake.Shake(dieWorldPause, 0.25f);
+        //StartCoroutine(playerJoinSequence(dieWorldPause));
+        //cameraShake.Shake(dieWorldPause, 0.25f);
 
         restartAwaitNoActivity();
         var successful = stockTextManager.AttemptRemoveStock(id);
-        if (successful)
+        if (successful) //player hasnt lost last stock
         {
             StartCoroutine(playerKilledRoutine(playerById[id]));
             return true;
 
         }
 
+
+        //checking end-state
         var num_alive = 0;
         int a_winning_player_id = -1;
         foreach (var player_id in playerById.Keys)
@@ -198,11 +207,11 @@ public class GameManager : MonoBehaviour
 
         }
         if (num_alive == 1) {
-            em.handle_end(string.Format("Player {0}", a_winning_player_id + 1));
+            em.HandleEnd(string.Format("Player {0}", a_winning_player_id + 1));
         }
         if (num_alive == 0)
         {
-            em.handle_end("Nobody");
+            em.HandleEnd ("Nobody");
         }
 
         return false;
@@ -215,53 +224,56 @@ public class GameManager : MonoBehaviour
     public void Pause(int playerID, bool isPausing)
     {
         
+        //if(isRoundStarted)
+        //{
+            if (isPausing)
+            {
+                isPaused = true;
+                pausedPlayerId = playerID;
+
+                Debug.Log(" ^^ Player " + playerID + " Paused");
+
+                foreach (Player p in players)
+                {
+                    if (p.id != playerID)
+                    {
+                        p.playerInput.DeactivateInput();
+                        Debug.Log(" ^^ Player " + p.id + " Deactivated");
+                    }
+                    else
+                    {
+                        p.playerInput.SwitchCurrentActionMap("UI");
+                        Debug.Log(" ^^ Player " + p.id + " Controlling Input");
+
+                        Debug.Log("Player is using " + p.playerInput.currentControlScheme);
+                        inputSystemUIInputModule.actionsAsset = p.playerInput.actions;
+
+
+                    }
+                }
+            }
+            else
+            {
+                isPaused = false;
+                pausedPlayerId = -1;
+
+                foreach (Player p in players)
+                {
+                    if (p.id != playerID)
+                    {
+                        p.playerInput.ActivateInput();
+                        Debug.Log(" ^^ Player " + p.id + " Reactivated");
+                    }
+                    else
+                    {
+                        p.playerInput.SwitchCurrentActionMap("Gameplay");
+                        Debug.Log(" ^^ Player " + p.id + " Switched back to Gameplay");
+                    }
+                }
+            }
+            pauseMenu.SetActive(isPaused);
+        //}
         
-        if(isPausing)
-        {
-            isPaused = true;
-            pausedPlayerId = playerID;
-            Time.timeScale = 0;
-
-            Debug.Log(" ^^ Player " + playerID + " Paused");
-
-            foreach(Player p in players)
-            {
-                if(p.id != playerID)
-                {
-                    //p.playerInput.DeactivateInput();
-                    Debug.Log(" ^^ Player " + p.id + " Deactivated");
-                } else
-                {
-                    p.playerInput.SwitchCurrentActionMap("UI");
-                       Debug.Log(" ^^ Player " + p.id + " Controlling Input");
-
-                    Debug.Log("Player is using " + p.playerInput.currentControlScheme);
-                    inputSystemUIInputModule.actionsAsset = p.playerInput.actions;
-
-
-                }
-            }
-        } else
-        {
-            isPaused = false;
-            pausedPlayerId = -1;
-            Time.timeScale = 1;
-
-            foreach (Player p in players)
-            {
-                if (p.id != playerID)
-                {
-                    //p.playerInput.ActivateInput();
-                    Debug.Log(" ^^ Player " + p.id + " Reactivated");
-                }
-                else
-                {
-                    p.playerInput.SwitchCurrentActionMap("Gameplay");
-                    Debug.Log(" ^^ Player " + p.id + " Switched back to Gameplay");
-                }
-            }
-        }
-        pauseMenu.SetActive(isPaused);
     }
 
     //Used for menu
@@ -289,20 +301,26 @@ public class GameManager : MonoBehaviour
 
     void restartAwaitNoActivity()
     {
-        if(enoughActivityCoroutine != null)
-        {
-            StopCoroutine(enoughActivityCoroutine);
-            enoughActivityCoroutine = null;
-        }
+        elapsedNoActivityTime = 0;
         blm.toggleLaserSpeedup(false);
-        enoughActivityCoroutine = StartCoroutine(awaitNoActivity(noActivityInterval));
     }
 
     IEnumerator awaitNoActivity(float sec)
     {
-        enoughActivityTextUI.SetActive(false);
-        yield return new WaitForSeconds(sec);
-        blm.toggleLaserSpeedup(true);
-        enoughActivityTextUI.SetActive(true);
+        if(isRoundStarted && !isPaused)
+        {
+            if(elapsedNoActivityTime > sec)
+            {
+                blm.toggleLaserSpeedup(true);
+                enoughActivityTextUI.SetActive(true);
+                elapsedNoActivityTime = 0;
+            } else
+            {
+                elapsedNoActivityTime += Time.deltaTime;
+                enoughActivityTextUI.SetActive(false);
+            }
+        }
+        yield return null;
+
     }
 }

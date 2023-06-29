@@ -10,7 +10,7 @@ public class Conductor : MonoBehaviour
     public float BPM = 80;
 
     private float intervalS;
-    private float intervalTime = float.NegativeInfinity;
+    private float elapsedTime;
     private float timeUntilNextBeat = 0;
 
 
@@ -27,16 +27,21 @@ public class Conductor : MonoBehaviour
         }
 
         intervalS = 60f / BPM;
+
+        elapsedTime = 0;
     }
 
 
     void FixedUpdate()
     {
-        if (Time.time > intervalTime)
+        if (GameManager.isRoundStarted && GameManager.isPaused)
         {
-            intervalTime = Time.time + intervalS;
+            if (elapsedTime > intervalS)
+            {
+                elapsedTime += Time.fixedDeltaTime;
+            }
+            timeUntilNextBeat = intervalS - elapsedTime;
         }
-        timeUntilNextBeat = intervalTime - Time.time;
     }
 
     public float getTimeUntilNextBeat() => timeUntilNextBeat;

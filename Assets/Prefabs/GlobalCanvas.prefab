@@ -1198,6 +1198,9 @@ MonoBehaviour:
   endPanel: {fileID: 6607792741031016751}
   endText: {fileID: 6607792741572777793}
   endButton: {fileID: 6607792741039656101}
+  endPauseSec: 1
+  endSlowDownSec: 3
+  endSlowDownRatio: 0.496
 --- !u!1 &7443696598065977612
 GameObject:
   m_ObjectHideFlags: 0

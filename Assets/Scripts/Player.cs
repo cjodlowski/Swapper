@@ -75,7 +75,6 @@ public class Player : MonoBehaviour
         //Vector2 scaled_move = new Vector2(move.x, move.y) * Time.deltaTime * speed;
         //transform.Translate(scaled_move, Space.World);
         rigidbody2D.velocity = move * speed;
-        Debug.Log("Current Action Map for Player " + id + " " + playerInput.currentActionMap);
     }
 
     #region CONTROLS
@@ -148,10 +147,6 @@ public class Player : MonoBehaviour
         }
 
     }
-
-    public void OnNavigate(InputAction.CallbackContext ctx)
-    {
-    }
     #endregion
 
     IEnumerator TimeoutCooldown()
@@ -214,7 +209,7 @@ public class Player : MonoBehaviour
     private void TriggerShoot()
     {
         CountdownHaloEnable(true);
-
+        Debug.Log("shooting");
         //shooting announces ready to play
         GameManager.Instance.PlayerAnnounceReadyToPlay(playerInput.playerIndex, this);
 

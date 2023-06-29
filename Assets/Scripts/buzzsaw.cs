@@ -24,7 +24,7 @@ public class buzzsaw : MonoBehaviour
     private float lastDistance;
     private Rigidbody2D rb;
     private float lastTime;
-    private float startTime;
+    private float elapsedTime;
     private float totalDist;
 
 
@@ -34,18 +34,9 @@ public class buzzsaw : MonoBehaviour
         //rb = GetComponent<Rigidbody2D>();
         transform.position = listPoints[0];
         lastPointIndex = 0;
-        //totalDist = getPathDistance(points);
-        startTime = Time.time;
-        //var next_point = (currentPoint + 1) % listPoints.Count;
-        //var next_dir = (listPoints[next_point] - listPoints[currentPoint]).normalized;
-        //rb.velocity = next_dir * speed;
-        //currentPoint = next_point;
-        //lastTime = Time.time;
+        elapsedTime = 0;
         GetComponent<Rigidbody2D>().angularVelocity = rotateSpeed;
         setBuzzTrail();
-        //buzzTrail.positionCount = 3;
-        //buzzTrail.SetPositions(new Vector3[3] { });
-        //lastDistance = Vector3.Distance(transform.position, listPoints[currentPoint]);
     }
 
     public struct SegmentIndices
@@ -186,36 +177,23 @@ public class buzzsaw : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var nextPoint = (lastPointIndex + 1) % listPoints.Count;
-        float distCovered = (Time.time - startTime) * speed;
-        float fractionCovered = distCovered / (listPoints[nextPoint] - listPoints[lastPointIndex]).magnitude;
-        transform.position = Vector3.Lerp(listPoints[lastPointIndex], listPoints[nextPoint], fractionCovered);
-        var currDistance = Vector3.Distance(transform.position, listPoints[nextPoint]);
-        setBuzzTrail();
-
-        if (currDistance < switchDistance)
+        if (GameManager.isRoundStarted && !GameManager.isPaused)
         {
+            var nextPoint = (lastPointIndex + 1) % listPoints.Count;
+            float distCovered = elapsedTime * speed;
+            float fractionCovered = distCovered / (listPoints[nextPoint] - listPoints[lastPointIndex]).magnitude;
+            transform.position = Vector3.Lerp(listPoints[lastPointIndex], listPoints[nextPoint], fractionCovered);
+            var currDistance = Vector3.Distance(transform.position, listPoints[nextPoint]);
+            setBuzzTrail();
 
-            startTime = Time.time;
-            lastPointIndex = nextPoint;
+            if (currDistance < switchDistance)
+            {
+
+                elapsedTime = 0;
+                lastPointIndex = nextPoint;
+            }
+
+            elapsedTime += Time.deltaTime;
         }
-        //var next_point = (currentPoint + 1) % listPoints.Count;
-        //var currDistance = Vector3.Distance(transform.position, listPoints[next_point]);
-        //if (currDistance < switchDistance)
-        //{
-        //    var next_dir = (listPoints[next_point] - listPoints[currentPoint]).normalized;
-        //    rb.velocity = next_dir * speed;
-        //    currentPoint = next_point;
-        //    lastDistance = Vector3.Distance(transform.position, listPoints[next_point]);
-        //}
-        //else
-        //{
-        //    if (currDistance > lastDistance)
-        //    {
-        //        var next_dir = (listPoints[next_point] - listPoints[currentPoint]).normalized;
-        //        rb.velocity = next_dir * speed;
-        //    }
-        //}
-        //lastDistance = currDistance;
     }
 }

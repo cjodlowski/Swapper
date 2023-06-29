@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public class EndManager : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class EndManager : MonoBehaviour
     public GameObject endPanel;
     public GameObject endText;
     public GameObject endButton;
+
+    public float endPauseSec;
+    public float endSlowDownSec;
+    [Range(0, 1)]
+    public float endSlowDownRatio;
 
     private bool ended = false;
     // Start is called before the first frame update
@@ -20,21 +26,29 @@ public class EndManager : MonoBehaviour
         endButton.SetActive(false);
     }
 
-    private void Update()
+    public void HandleEnd(string winner)
     {
-    }
-
-    public void handle_end(string winner)
-    {
-        endPanel.SetActive(true);
-        endText.SetActive(true);
-        endButton.SetActive(true);
+        StartCoroutine(endSequence());
 
         var text = endText.GetComponent<TMPro.TextMeshProUGUI>();
         text.text = string.Format("{0} won! Press button to restart", winner);
 
         ended = true;
-        //StartCoroutine(restart_soon(5));
+    }
+
+    private IEnumerator endSequence()
+    {
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(endPauseSec);
+        Time.timeScale = endSlowDownRatio;
+
+        yield return new WaitForSecondsRealtime(endSlowDownSec);
+
+        endPanel.SetActive(true);
+        endText.SetActive(true);
+        endButton.SetActive(true);
+
+        Time.timeScale = 0;
     }
 
     public void restart(float sec)
