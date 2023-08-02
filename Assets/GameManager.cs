@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
 
     private List<Player> players = new List<Player>();
 
+    public static List<bullet> bullets = new List<bullet>();
+
     [Header("UI and TimeScale")]
     public static bool isRoundStarted;
     
@@ -251,6 +253,13 @@ public class GameManager : MonoBehaviour
 
                     }
                 }
+
+                //worst fix ive ever seen. 
+                foreach(bullet bullet in bullets)
+                {
+                    bullet.SetVelocity(bullet.rb.velocity);
+                    bullet.rb.velocity = Vector2.zero;
+                }
             }
             else
             {
@@ -270,7 +279,13 @@ public class GameManager : MonoBehaviour
                         Debug.Log(" ^^ Player " + p.id + " Switched back to Gameplay");
                     }
                 }
-            }
+
+                //todo: ugh
+                foreach (bullet bullet in bullets)
+                {
+                    bullet.rb.velocity = bullet.ogVelocity;
+                }
+        }
             pauseMenu.SetActive(isPaused);
         //}
         

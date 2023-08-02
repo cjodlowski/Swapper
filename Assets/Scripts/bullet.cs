@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
+    public float bulletSpeed;
+    public Vector2 ogVelocity;
+
+    public Rigidbody2D rb;
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
+        GameManager.bullets.Add(this);
     }
 
-    // Update is called once per frame
-    void Update()
+    //roundabout way of storing the velocity set in cannon script here
+    public void SetVelocity(Vector2 vel)
     {
-        
+        ogVelocity = vel;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -51,5 +56,10 @@ public class bullet : MonoBehaviour
             transform.position = new Vector3(1000, 1000);
             Destroy(gameObject);
         }
+    }
+
+    private void OnDisable()
+    {
+        GameManager.bullets.Remove(this);
     }
 }

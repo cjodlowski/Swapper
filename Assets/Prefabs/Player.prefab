@@ -800,7 +800,7 @@ MonoBehaviour:
   maxLaserDistance: 100
   spawnPoint: {x: -3, y: 3, z: 0}
   invinceFlashIntervalS: 0.1
-  startInvinceDurationS: 5
+  startInvinceDurationS: 3
   selfSwapInvinceDurationS: 1
   laserCooldown: 1
   laserCooldownProgress: {fileID: 814276896813567178}

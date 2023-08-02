@@ -414,7 +414,7 @@ public class Player : MonoBehaviour
         {
             dying = true;
             var respawns = GameManager.Instance.PlayerKilled(id);
-            yield return new WaitForSeconds(0.01f);
+            yield return null;
             if (!respawns)
             {
                 dead = true;

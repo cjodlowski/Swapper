@@ -34,6 +34,7 @@ public class cannon : MonoBehaviour
                 var rb = bulletObj.GetComponent<Rigidbody2D>();
                 var rad = Mathf.Deg2Rad * (-transform.rotation.eulerAngles.z);
                 rb.velocity = new Vector2(Mathf.Sin(rad), Mathf.Cos(rad)) * bulletSpeed;
+                bulletObj.GetComponent<bullet>().SetVelocity(rb.velocity);
             } else
             {
                 elapsedTime += Time.deltaTime;

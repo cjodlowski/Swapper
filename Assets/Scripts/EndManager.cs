@@ -38,6 +38,7 @@ public class EndManager : MonoBehaviour
 
     private IEnumerator endSequence()
     {
+        GameManager.isRoundStarted = false;
         Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(endPauseSec);
         Time.timeScale = endSlowDownRatio;
